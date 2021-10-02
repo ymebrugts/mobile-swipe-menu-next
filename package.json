@@ -1,14 +1,14 @@
 {
-  "name": "mobile-swipe-menu",
+  "name": "@ymebrugts/mobile-swipe-menu-next",
   "description": "Swipe Menu with Vanilla JS for mobile",
-  "version": "2.2.2",
+  "version": "2.2.6",
   "homepage": "https://github.com/milkamil93/mobile-swipe-menu",
   "main": "index.js",
-  "author": "milkamil93",
+  "author": "milkamil93, ymebrugts",
   "license": "GPL-3.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/milkamil93/mobile-swipe-menu.git"
+    "url": "git+https://github.com/ymebrugts/mobile-swipe-menu-next.git"
   },
   "keywords": [
     "swipe",

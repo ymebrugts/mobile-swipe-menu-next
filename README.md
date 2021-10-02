@@ -7,7 +7,8 @@ Swipe Menu with Vanilla JS for mobile
 
 ### Installation
 ```
-npm install mobile-swipe-menu --save
+-
+npm install @ymebrugts/mobile-swipe-menu-next --save
 ```
 
 ### Using
@@ -48,7 +49,7 @@ new MobileSwipeMenu(selector, options)
 
 #### ES6
 ```
-import MobileSwipeMenu from 'mobile-swipe-menu';
+import MobileSwipeMenu from '@ymebrugts/mobile-swipe-menu-next';
 new MobileSwipeMenu('#menu', {
     mode: 'right',
     width: window.innerWidth / 1.15
@@ -83,3 +84,21 @@ new MobileSwipeMenu('#menu', {
     });
 </script>
 ```
+
+### For use in Vue
+This library will work with any front-end library.
+
+The library will have to be transpiled using babel so add the following into the vue.config.js
+
+```
+module.exports = {
+	transpileDependencies: [
+		'@ymebrugts/mobile-swipe-menu-next'
+	]
+};
+```
+
+### For use in typescript 
+in src folder add file: "mobile-swipe-menu.d.ts" with the following contents:
+
+`declare module '@ymebrugts/mobile-swipe-menu-next';`
