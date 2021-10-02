@@ -33,6 +33,19 @@ export default class
      * */
     _useHookWidthPercentage
 
+
+    /**
+     * @description Open or close breakpoint width.
+     * @type number
+     * */
+    _breakpointWidth
+
+    /**
+     * @description Use percentage of your window as breakpointWidth.
+     * @type boolean
+     * */
+    _useBreakpointWidthPercentage
+
     /**
      * @description Capture mode. If enabled, the entire screen is taken into account.
      * @type boolean
@@ -77,6 +90,8 @@ export default class
      * @param {number} options.width - Menu width.
      * @param {number} options.hookWidth - Side grip width. Does not work if `enableBodyHook` is enabled.
      * @param {boolean} options.useHookWidthPercentage - Use percentage of your window as hookWidth.
+     * @param {number} options.breakpointWidth - Open or close breakpoint width.
+     * @param {boolean} options.useBreakpointWidthPercentage - Use percentage of your window as breakpointWidth.
      * @param {boolean} options.enableBodyHook - Capture mode. If enabled, the entire screen is taken into account.
      * @param {object} options.events - Event set.
      * @param {function} options.events.start - Event starting swiping menu.
@@ -92,6 +107,8 @@ export default class
             width = 0,
             hookWidth = 30,
             useHookWidthPercentage = false,
+            breakpointWidth = 30,
+            useBreakpointWidthPercentage = false,
             enableBodyHook = false,
             events = {}
         } = options
@@ -100,6 +117,8 @@ export default class
         this._width = width
         this._hookWidth = hookWidth
         this._useHookWidthPercentage = useHookWidthPercentage;
+        this._breakpointWidth = breakpointWidth
+        this._useBreakpointWidthPercentage = useBreakpointWidthPercentage;
         this._enableBodyHook = enableBodyHook
         this._events = Object.assign({
             start:  () => {},
@@ -323,12 +342,16 @@ export default class
 
             let boxLeft = Math.floor(target.getBoundingClientRect().left)
 
+            const breakpointWidth = self._useBreakpointWidthPercentage
+                ? self._windowWidth * self._breakpointWidth / 100
+                : self._breakpointWidth
+
             if (self._mode === 'right') {
                 boxLeft = boxLeft - (self._windowWidth - self._width)
                 switch (this.currentDirection) {
                     case 'left': {
                         if (boxLeft < self._width) {
-                            if (boxLeft < self._width - 30) {
+                            if (boxLeft < self._width - breakpointWidth) {
                                 self._openRightMenu()
                             } else {
                                 self._closeRightMenu()
@@ -340,7 +363,7 @@ export default class
                     }
                     case 'right': {
                         if (boxLeft > 0) {
-                            if (boxLeft > 30) {
+                            if (boxLeft > breakpointWidth) {
                                 self._closeRightMenu()
                             } else {
                                 self._openRightMenu()
@@ -355,7 +378,7 @@ export default class
                 switch (this.currentDirection) {
                     case 'right': {
                         if (-boxLeft < self._width) {
-                            if (-boxLeft < self._width - 30) {
+                            if (-boxLeft < self._width - breakpointWidth) {
                                 self._openLeftMenu()
                             } else {
                                 self._closeLeftMenu()
@@ -367,7 +390,7 @@ export default class
                     }
                     case 'left': {
                         if (boxLeft < 0) {
-                            if (boxLeft < -30) {
+                            if (boxLeft < -breakpointWidth) {
                                 self._closeLeftMenu()
                             } else {
                                 self._openLeftMenu()
