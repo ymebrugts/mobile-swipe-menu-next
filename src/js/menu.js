@@ -155,6 +155,7 @@ export default class
         this._element.style.zIndex = '1000'
         this._element.style.position = 'fixed'
         this._element.style.willChange = 'transform'
+        this._element.style.webkitTapHighlightColor = 'transparent'
         this._windowWidth = window.innerWidth - this._getScrollWidth()
         this.setWidth(this._width || this._windowWidth)
     }
