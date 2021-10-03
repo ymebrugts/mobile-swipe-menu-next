@@ -43,6 +43,12 @@ export class Swipe
     currentDirection
 
     /**
+     * @type number|null
+     * @description Starting time of the swipe
+     */
+    startTime
+
+    /**
      * @constructor
      * @param selector {string, object}
      * */
@@ -56,6 +62,7 @@ export class Swipe
         this.xCurrent = null
         this.yCurrent = null
         this.currentDirection = null
+        this.startTime = null
 
         if (typeof selector === 'string') {
             document.querySelectorAll(selector).forEach(this.eventListener.bind(this))

@@ -53,6 +53,12 @@ export default class
     _enableBodyHook
 
     /**
+     * @description Velocity in screen percentage per second needed to activate menu.
+     * @type number
+     * */
+    _minimalVelocity
+
+    /**
      * @description Scrolling bar width.
      * @types number, boolean
      * */
@@ -90,8 +96,6 @@ export default class
      * @param {number} options.width - Menu width.
      * @param {number} options.hookWidth - Side grip width. Does not work if `enableBodyHook` is enabled.
      * @param {boolean} options.useHookWidthPercentage - Use percentage of your window as hookWidth.
-     * @param {number} options.breakpointWidth - Open or close breakpoint width.
-     * @param {boolean} options.useBreakpointWidthPercentage - Use percentage of your window as breakpointWidth.
      * @param {boolean} options.enableBodyHook - Capture mode. If enabled, the entire screen is taken into account.
      * @param {object} options.events - Event set.
      * @param {function} options.events.start - Event starting swiping menu.
@@ -110,16 +114,18 @@ export default class
             breakpointWidth = 30,
             useBreakpointWidthPercentage = false,
             enableBodyHook = false,
+            minimalVelocity = 100,
             events = {}
         } = options
 
         this._mode = mode
         this._width = width
         this._hookWidth = hookWidth
-        this._useHookWidthPercentage = useHookWidthPercentage;
+        this._useHookWidthPercentage = useHookWidthPercentage
         this._breakpointWidth = breakpointWidth
-        this._useBreakpointWidthPercentage = useBreakpointWidthPercentage;
+        this._useBreakpointWidthPercentage = useBreakpointWidthPercentage
         this._enableBodyHook = enableBodyHook
+        this._minimalVelocity = minimalVelocity
         this._events = Object.assign({
             start:  () => {},
             stop:   () => {},
@@ -261,6 +267,7 @@ export default class
                 this.set('xStart', toucheX - matrix)
             }
 
+            this.set('startTime', Date.now())
             self._events.start.bind(self)(this)
         }
 
@@ -340,18 +347,20 @@ export default class
                 return false
             }
 
-            let boxLeft = Math.floor(target.getBoundingClientRect().left)
-
+            const boxLeft = self._mode === 'right'
+                ? Math.floor(target.getBoundingClientRect().left) - (self._windowWidth - self._width)
+                : Math.floor(target.getBoundingClientRect().left)
+            const duration = (Date.now() - this.get('startTime')) / 1000
+            const velocity = (distance, duration) => distance  * (100 / self._windowWidth) / duration
             const breakpointWidth = self._useBreakpointWidthPercentage
                 ? self._windowWidth * self._breakpointWidth / 100
                 : self._breakpointWidth
 
             if (self._mode === 'right') {
-                boxLeft = boxLeft - (self._windowWidth - self._width)
                 switch (this.currentDirection) {
                     case 'left': {
                         if (boxLeft < self._width) {
-                            if (boxLeft < self._width - breakpointWidth) {
+                            if (velocity(self._width - boxLeft, duration) > self._minimalVelocity || boxLeft < self._width - breakpointWidth) {
                                 self._openRightMenu()
                             } else {
                                 self._closeRightMenu()
@@ -363,7 +372,7 @@ export default class
                     }
                     case 'right': {
                         if (boxLeft > 0) {
-                            if (boxLeft > breakpointWidth) {
+                            if (velocity(boxLeft, duration) > self._minimalVelocity || boxLeft > breakpointWidth) {
                                 self._closeRightMenu()
                             } else {
                                 self._openRightMenu()
@@ -378,7 +387,7 @@ export default class
                 switch (this.currentDirection) {
                     case 'right': {
                         if (-boxLeft < self._width) {
-                            if (-boxLeft < self._width - breakpointWidth) {
+                            if (velocity(-boxLeft - self._width, duration) > self._minimalVelocity || -boxLeft < self._width - breakpointWidth) {
                                 self._openLeftMenu()
                             } else {
                                 self._closeLeftMenu()
@@ -390,7 +399,7 @@ export default class
                     }
                     case 'left': {
                         if (boxLeft < 0) {
-                            if (boxLeft < -breakpointWidth) {
+                            if (velocity(-boxLeft, duration) > self._minimalVelocity || boxLeft < -breakpointWidth) {
                                 self._closeLeftMenu()
                             } else {
                                 self._openLeftMenu()

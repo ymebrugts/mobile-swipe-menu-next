@@ -21,10 +21,11 @@ new MobileSwipeMenu(selector, options)
 | `mode`                         | string    | right     | operating mode (right, left)         |
 | `width`                        | number    | 0         | menu width                           |
 | `hookWidth`                    | number    | 30        | protrusion width                     |
-| `useHookWidthPercentage`       | boolean   | false     | use percentage as hookWidth          |
+| `useHookWidthPercentage`       | boolean   | false     | use % as hookWidth                   |
 | `breakpointWidth`              | number    | 30        | breakpoint width for activating menu |
-| `useBreakpointWidthPercentage` | boolean   | false     | use percentage as breakpointWidth    |
+| `useBreakpointWidthPercentage` | boolean   | false     | use % as breakpointWidth             |
 | `enableBodyHook`               | boolean   | false     | react to the whole window            |
+| `minimalVelocity`              | number    | 100       | velocity in screen %/s needed        |
 | `events`                       | object    | {}        | event set object                     |
 
 ### Methods
