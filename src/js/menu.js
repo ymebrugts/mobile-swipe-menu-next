@@ -96,6 +96,8 @@ export default class
      * @param {number} options.width - Menu width.
      * @param {number} options.hookWidth - Side grip width. Does not work if `enableBodyHook` is enabled.
      * @param {boolean} options.useHookWidthPercentage - Use percentage of your window as hookWidth.
+     * @param {number} options.breakpointWidth - Open or close breakpoint width.
+     * @param {boolean} options.useBreakpointWidthPercentage - Use percentage of your window as breakpointWidth.
      * @param {boolean} options.enableBodyHook - Capture mode. If enabled, the entire screen is taken into account.
      * @param {object} options.events - Event set.
      * @param {function} options.events.start - Event starting swiping menu.
